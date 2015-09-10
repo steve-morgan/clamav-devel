@@ -23,7 +23,9 @@
 #endif
 
 #if defined(C_SOLARIS)
+#ifndef __EXTENSIONS__
 #define __EXTENSIONS__
+#endif
 #endif
 
 /* must be first because it may define _XOPEN_SOURCE */
@@ -45,6 +47,7 @@
 #ifndef _WIN32
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include <sys/un.h>
 #include <netdb.h>
 #endif
 
@@ -224,7 +227,8 @@ static int chkpath(const char *path)
    if((opt = optget(clamdopts, "ExcludePath"))->enabled) {
 	while(opt) {
 	    if(match_regex(path, opt->strarg) == 1) {
-		logg("~%s: Excluded\n", path);
+                if (printinfected != 1)
+                    logg("~%s: Excluded\n", path);
 		return 1;
 	    }
 	    opt = opt->nextarg;

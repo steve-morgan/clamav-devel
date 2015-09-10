@@ -450,7 +450,8 @@ wwwconnect (const char *server, const char *proxy, int pport, char *ip,
             }
             else
                 i++;
-            mirman_update (addr, rp->ai_family, mdat, 2);
+            if (mdat)
+                mirman_update (addr, rp->ai_family, mdat, 2);
             continue;
         }
         else
@@ -1068,7 +1069,11 @@ getfile_mirman (const char *srcfile, const char *destfile,
         if (totalsize > 0)
             percentage = (int) (100 * (float) totaldownloaded / totalsize);
 
+#ifdef HAVE_UNISTD_H
+        if (!mprintf_quiet && isatty(fileno(stdout)))
+#else
         if (!mprintf_quiet)
+#endif
         {
             if (totalsize > 0)
             {

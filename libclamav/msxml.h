@@ -1,7 +1,9 @@
 /*
- *  Copyright (C) 2011 Sourcefire, Inc.
+ *  Extract component parts of MS XML files (e.g. MS Office 2003 XML Documents)
  *
- *  Authors: Tomasz Kojm
+ *  Copyright (C) 2007-2008 Sourcefire, Inc.
+ *
+ *  Authors: Kevin Lin
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License version 2 as
@@ -18,9 +20,15 @@
  *  MA 02110-1301, USA.
  */
 
-#ifndef __FAN_H
-#define __FAN_H
+#ifndef __MSXML_H
+#define __MSXML_H
 
-void *fan_th(void *arg);
-
+#if HAVE_CONFIG_H
+#include "clamav-config.h"
 #endif
+
+#include "others.h"
+
+int cli_scanmsxml(cli_ctx *ctx);
+
+#endif /* __MSXML_H */

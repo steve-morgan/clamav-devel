@@ -50,8 +50,13 @@
 #include "bytecode_api.h"
 #include "events.h"
 #include "crtmgr.h"
+
 #ifdef HAVE_JSON
 #include "json.h"
+#endif
+
+#ifdef HAVE_YARA
+#include "yara_clam.h"
 #endif
 
 #if HAVE_LIBXML2
@@ -67,7 +72,7 @@
  * in re-enabling affected modules.
  */
 
-#define CL_FLEVEL 79
+#define CL_FLEVEL 81
 #define CL_FLEVEL_DCONF	CL_FLEVEL
 #define CL_FLEVEL_SIGTOOL CL_FLEVEL
 
@@ -229,6 +234,20 @@ struct cli_dbinfo {
     struct cli_dbinfo *next;
 };
 
+#define CLI_PWDB_COUNT 3
+typedef enum {
+    CLI_PWDB_ANY = 0,
+    CLI_PWDB_ZIP = 1,
+    CLI_PWDB_RAR = 2
+} cl_pwdb_t;
+
+struct cli_pwdb {
+    char *name;
+    unsigned char *passwd;
+    uint16_t length;
+    struct cli_pwdb *next;
+};
+
 struct cl_engine {
     uint32_t refcount; /* reference counter */
     uint32_t sdb;
@@ -285,6 +304,9 @@ struct cl_engine {
     struct cli_ftype *ftypes;
     struct cli_ftype *ptypes;
 
+    /* Container password storage */
+    struct cli_pwdb **pwdbs;
+
     /* Ignored signatures */
     struct cli_matcher *ignored;
 
@@ -315,7 +337,6 @@ struct cl_engine {
     clcb_hash cb_hash;
     clcb_meta cb_meta;
     clcb_file_props cb_file_props;
-    void *cb_file_props_data;
 
     /* Used for bytecode */
     struct cli_all_bc bcs;
@@ -352,6 +373,16 @@ struct cl_engine {
 
     /* millisecond time limit for preclassification scanning */
     uint32_t time_limit;
+
+    /* PCRE matching limitations */
+    uint64_t pcre_match_limit;
+    uint64_t pcre_recmatch_limit;
+    uint64_t pcre_max_filesize;
+
+#ifdef HAVE_YARA
+    /* YARA */
+    struct _yara_global * yara_global;
+#endif
 };
 
 struct cl_settings {
@@ -386,7 +417,6 @@ struct cl_settings {
     clcb_hash cb_hash;
     clcb_meta cb_meta;
     clcb_file_props cb_file_props;
-    void *cb_file_props_data;
 
     /* Engine max settings */
     uint64_t maxembeddedpe;  /* max size to scan MSEXE for PE */
@@ -411,6 +441,11 @@ struct cl_settings {
 
     /* Engine max settings */
     uint32_t maxiconspe; /* max number of icons to scan for PE */
+
+    /* PCRE matching limitations */
+    uint64_t pcre_match_limit;
+    uint64_t pcre_recmatch_limit;
+    uint64_t pcre_max_filesize;
 };
 
 extern int (*cli_unrar_open)(int fd, const char *dirname, unrar_state_t *state);
@@ -506,30 +541,30 @@ struct unaligned_ptr {
 #define be32_to_host(v)	(v)
 #define be64_to_host(v)	(v)
 
-static inline int32_t cli_readint32(const char *buff)
+static inline int32_t cli_readint32(const void *buff)
 {
 	int32_t ret;
-    ret = buff[0] & 0xff;
-    ret |= (buff[1] & 0xff) << 8;
-    ret |= (buff[2] & 0xff) << 16;
-    ret |= (buff[3] & 0xff) << 24;
+    ret = ((const char *)buff)[0] & 0xff;
+    ret |= (((const char *)buff)[1] & 0xff) << 8;
+    ret |= (((const char *)buff)[2] & 0xff) << 16;
+    ret |= (((const char *)buff)[3] & 0xff) << 24;
     return ret;
 }
 
-static inline int16_t cli_readint16(const char *buff)
+static inline int16_t cli_readint16(const void *buff)
 {
 	int16_t ret;
-    ret = buff[0] & 0xff;
-    ret |= (buff[1] & 0xff) << 8;
+    ret = ((const char *)buff)[0] & 0xff;
+    ret |= (((const char *)buff)[1] & 0xff) << 8;
     return ret;
 }
 
-static inline void cli_writeint32(char *offset, uint32_t value)
+static inline void cli_writeint32(void *offset, uint32_t value)
 {
-    offset[0] = value & 0xff;
-    offset[1] = (value & 0xff00) >> 8;
-    offset[2] = (value & 0xff0000) >> 16;
-    offset[3] = (value & 0xff000000) >> 24;
+    ((char *)offset)[0] = value & 0xff;
+    ((char *)offset)[1] = (value & 0xff00) >> 8;
+    ((char *)offset)[2] = (value & 0xff0000) >> 16;
+    ((char *)offset)[3] = (value & 0xff000000) >> 24;
 }
 #endif
 
@@ -653,6 +688,7 @@ int cli_updatelimits(cli_ctx *, unsigned long);
 unsigned long cli_getsizelimit(cli_ctx *, unsigned long);
 int cli_matchregex(const char *str, const char *regex);
 void cli_qsort(void *a, size_t n, size_t es, int (*cmp)(const void *, const void *));
+void cli_qsort_r(void *a, size_t n, size_t es, int (*cmp)(const void*, const void *, const void *), void *arg);
 int cli_checktimelimit(cli_ctx *ctx);
 
 /* symlink behaviour */

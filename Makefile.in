@@ -119,7 +119,7 @@ DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/docs/man/clamsubmit.1.in AUTHORS COPYING \
 	ChangeLog INSTALL NEWS README config/compile \
 	config/config.guess config/config.rpath config/config.sub \
-	config/depcomp config/install-sh config/missing \
+	config/depcomp config/install-sh config/missing config/ylwrap \
 	config/ltmain.sh $(top_srcdir)/config/compile \
 	$(top_srcdir)/config/config.guess \
 	$(top_srcdir)/config/config.rpath \
@@ -190,6 +190,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/acinclude.m4 \
 	$(top_srcdir)/m4/reorganization/distcheck.m4 \
 	$(top_srcdir)/m4/reorganization/llvm.m4 \
 	$(top_srcdir)/m4/reorganization/sha_collect.m4 \
+	$(top_srcdir)/m4/reorganization/yara.m4 \
 	$(top_srcdir)/m4/reorganization/bsd.m4 \
 	$(top_srcdir)/m4/reorganization/libs/curl.m4 \
 	$(top_srcdir)/m4/reorganization/substitutions.m4 \
@@ -397,6 +398,7 @@ GENHTML = @GENHTML@
 GETENT = @GETENT@
 GPERF = @GPERF@
 GREP = @GREP@
+HAVE_YARA = @HAVE_YARA@
 INCLTDL = @INCLTDL@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -540,7 +542,7 @@ ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = libltdl libclamav clamscan clamd clamdscan freshclam sigtool \
 	clamconf database docs etc clamav-milter test clamdtop clambc \
 	unit_tests $(am__append_1)
-EXTRA_DIST = FAQ examples BUGS shared libclamav.pc.in libclamunrar_iface/Makefile.am libclamunrar_iface/Makefile.in UPGRADE COPYING.bzip2 COPYING.lzma COPYING.unrar COPYING.LGPL COPYING.llvm COPYING.file COPYING.zlib COPYING.getopt COPYING.regex COPYING.sha256 platform.h.in clamdscan/clamdscan.map win32
+EXTRA_DIST = FAQ examples BUGS shared libclamav.pc.in libclamunrar_iface/Makefile.am libclamunrar_iface/Makefile.in UPGRADE COPYING.bzip2 COPYING.lzma COPYING.unrar COPYING.LGPL COPYING.llvm COPYING.file COPYING.zlib COPYING.getopt COPYING.regex COPYING.YARA COPYING.pcre platform.h.in clamdscan/clamdscan.map win32
 bin_SCRIPTS = clamav-config
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libclamav.pc

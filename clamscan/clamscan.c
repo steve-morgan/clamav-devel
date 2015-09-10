@@ -239,7 +239,7 @@ void help(void)
     mprintf("    --bytecode[=yes(*)/no]               Load bytecode from the database\n");
     mprintf("    --bytecode-unsigned[=yes/no(*)]      Load unsigned bytecode\n");
     mprintf("    --bytecode-timeout=N                 Set bytecode timeout (in milliseconds)\n");
-    mprintf("    --bytecode-statistics[=yes/no(*)]    Collect and print bytecode statistics\n");
+    mprintf("    --statistics[=none(*)/bytecode/pcre] Collect and print execution statistics\n");
     mprintf("    --detect-pua[=yes/no(*)]             Detect Possibly Unwanted Applications\n");
     mprintf("    --exclude-pua=CAT                    Skip PUA sigs of category CAT\n");
     mprintf("    --include-pua=CAT                    Load PUA sigs of category CAT\n");
@@ -279,6 +279,11 @@ void help(void)
     mprintf("    --max-ziptypercg=#n                  Maximum size zip to type reanalyze\n");
     mprintf("    --max-partitions=#n                  Maximum number of partitions in disk image to be scanned\n");
     mprintf("    --max-iconspe=#n                     Maximum number of icons in PE file to be scanned\n");
+#if HAVE_PCRE
+    mprintf("    --pcre-match-limit=#n                Maximum calls to the PCRE match function.\n");
+    mprintf("    --pcre-recmatch-limit=#n             Maximum recursive calls to the PCRE match function.\n");
+    mprintf("    --pcre-max-filesize=#n               Maximum size file to perform PCRE subsig matching.\n");
+#endif /* HAVE_PCRE */
     mprintf("    --enable-stats                       Enable statistical reporting of malware\n");
     mprintf("    --disable-pe-stats                   Disable submission of individual PE sections in stats submissions\n");
     mprintf("    --stats-timeout=#n                   Number of seconds to wait for waiting a response back from the stats server\n");

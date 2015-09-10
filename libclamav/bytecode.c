@@ -1454,6 +1454,11 @@ void cli_sigperf_print()
     struct sigperf_elem stats[MAX_BC], *elem = stats;
     int i, elems = 0, max_name_len = 0, name_len;
 
+    if (!g_sigid || !g_sigevents) {
+        cli_warnmsg("cli_sigperf_print: statistics requested but no bytecodes were loaded!\n");
+        return;
+    }
+
     memset(stats, 0, sizeof(stats));
     for (i=0;i<MAX_BC;i++) {
 	union ev_val val;
@@ -1479,6 +1484,8 @@ void cli_sigperf_print()
 	elem++;
 	elems++;
     }
+    if (max_name_len < strlen("Bytecode name"))
+        max_name_len = strlen("Bytecode name");
 
     cli_qsort(stats, elems, sizeof(struct sigperf_elem), sigelem_comp);
 
@@ -2963,7 +2970,13 @@ void cli_bytecode_describe(const struct cli_bc *bc)
 	    puts("logical only");
 	    break;
 	case BC_PE_UNPACKER:
-	    puts("PE hook");
+	    puts("PE unpacker hook");
+	    break;
+    case BC_PE_ALL:
+        puts("all PE hook");
+        break;
+    case BC_PRECLASS:
+        puts("preclass hook");
 	    break;
 	default:
 	    printf("Unknown (type %u)", bc->kind);
@@ -2999,6 +3012,12 @@ void cli_bytecode_describe(const struct cli_bc *bc)
 		puts("PE files matching logical signature");
 	    else
 		puts("all PE files!");
+	    break;
+	case BC_PRECLASS:
+	    if (bc->lsig)
+		puts("PRECLASS files matching logical signature");
+	    else
+		puts("all PRECLASS files!");
 	    break;
 	default:
 	    puts("N/A (unknown type)\n");

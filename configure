@@ -635,7 +635,9 @@ ac_includes_default="\
 #endif"
 
 enable_option_checking=no
-ac_subst_vars='ENABLE_LLVM_FALSE
+ac_subst_vars='ENABLE_YARA_FALSE
+ENABLE_YARA_TRUE
+ENABLE_LLVM_FALSE
 ENABLE_LLVM_TRUE
 ltdl_LTLIBOBJS
 ltdl_LIBOBJS
@@ -679,6 +681,7 @@ CLAMSCAN_CPPFLAGS
 FRESHCLAM_CPPFLAGS
 CLAMSUBMIT_CFLAGS
 CLAMSUBMIT_LIBS
+HAVE_YARA
 subdirs
 WERR_CFLAGS_MILTER
 WERR_CFLAGS
@@ -925,6 +928,7 @@ with_system_llvm
 with_llvm_linking
 enable_llvm
 enable_sha_collector_for_internal_use
+enable_yara
 with_libcurl
 '
       ac_precious_vars='build_alias
@@ -1604,6 +1608,7 @@ Optional Features:
                           enable warnings as error for distcheck [default=no]
   --enable-llvm           enable 'llvm' JIT/verifier support [default=auto]
 
+  --disable-yara          do not include yara support
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -5120,7 +5125,7 @@ $as_echo "$ac_cv_safe_to_define___extensions__" >&6; }
 VERSION="devel-`date +%Y%m%d`"
 
 LC_CURRENT=7
-LC_REVISION=24
+LC_REVISION=27
 LC_AGE=1
 LIBCLAMAV_VERSION="$LC_CURRENT":"$LC_REVISION":"$LC_AGE"
 
@@ -17551,47 +17556,56 @@ PCRE_HOME=""
 # Check whether --with-pcre was given.
 if test "${with_pcre+set}" = set; then :
   withval=$with_pcre;
-  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for libpcre installation" >&5
-$as_echo_n "checking for libpcre installation... " >&6; }
-  if test "X$withval" = "Xno"; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-  else
-    if test "X$withval" = "Xyes"; then
-      PCRE_HOME=/usr/local
-      if test ! -x "$PCRE_HOME/bin/pcre-config"; then
-        PCRE_HOME=/usr
-        if test ! -x "$PCRE_HOME/bin/pcre-config"; then
-          PCRE_HOME=""
-        fi
-      fi
-    elif test "$withval"; then
-      PCRE_HOME="$withval"
-      if test ! -x "$PCRE_HOME/bin/pcre-config"; then
-        PCRE_HOME=""
-        as_fn_error $? "cannot locate libpcre at $withval" "$LINENO" 5
-      fi
-    else
-      as_fn_error $? "cannot assign blank value to --with-pcre" "$LINENO" 5
-    fi
-
-    if test "x$PCRE_HOME" != "x"; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: using $PCRE_HOME" >&5
-$as_echo "using $PCRE_HOME" >&6; }
-    else
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
-$as_echo "not found" >&6; }
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: cannot locate libpcre at /usr/local or /usr" >&5
-$as_echo "$as_me: WARNING: cannot locate libpcre at /usr/local or /usr" >&2;}
-    fi
-  fi
+  PCRE_HOME=$withval
 
 else
 
-  PCRE_HOME=""
+  PCRE_HOME="yes"
 
 fi
 
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for libpcre installation" >&5
+$as_echo_n "checking for libpcre installation... " >&6; }
+case "$PCRE_HOME" in
+no)
+  PCRE_HOME=""
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+  ;;
+yes)
+  PCRE_HOME=/usr/local
+  if test ! -x "$PCRE_HOME/bin/pcre-config"; then
+    PCRE_HOME=/usr
+    if test ! -x "$PCRE_HOME/bin/pcre-config"; then
+      PCRE_HOME=""
+      { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+      { $as_echo "$as_me:${as_lineno-$LINENO}: cannot locate libpcre at /usr/local or /usr" >&5
+$as_echo "$as_me: cannot locate libpcre at /usr/local or /usr" >&6;}
+    fi
+  fi
+  ;;
+"")
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: " >&5
+$as_echo "" >&6; }
+  as_fn_error $? "cannot assign blank value to --with-pcre" "$LINENO" 5
+  ;;
+*)
+  PCRE_HOME="$withval"
+  if test ! -x "$PCRE_HOME/bin/pcre-config"; then
+    PCRE_HOME=""
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
+$as_echo "not found" >&6; }
+    as_fn_error $? "cannot locate libpcre at $withval" "$LINENO" 5
+  fi
+  ;;
+esac
+
+if test "x$PCRE_HOME" != "x"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: using $PCRE_HOME" >&5
+$as_echo "using $PCRE_HOME" >&6; }
+fi
 
 found_pcre="no"
 PCRECONF_VERSION=""
@@ -17601,15 +17615,35 @@ if test "x$PCRE_HOME" != "x"; then
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking pcre-config version" >&5
 $as_echo_n "checking pcre-config version... " >&6; }
   PCRECONF_VERSION="`$PCRE_HOME/bin/pcre-config --version`"
-  if test "x%PCRECONF_VERSION" != "x"; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PCRECONF_VERSION\"" >&5
-$as_echo "$PCRECONF_VERSION\"" >&6; }
-    found_pcre="yes"
-    PCRE_CPPFLAGS="`$PCRE_HOME/bin/pcre-config --cflags`"
-    PCRE_LIBS="`$PCRE_HOME/bin/pcre-config --libs`"
-  else
+
+  if test "x$PCRECONF_VERSION" == "x"; then
     as_fn_error $? "pcre-config failed" "$LINENO" 5
   fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PCRECONF_VERSION" >&5
+$as_echo "$PCRECONF_VERSION" >&6; }
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for CVE-2015-3210" >&5
+$as_echo_n "checking for CVE-2015-3210... " >&6; }
+  pcrever_major=`echo "$PCRECONF_VERSION" | sed -e 's/\([0-9]\).*/\1/'`
+  pcrever_minor=`echo "$PCRECONF_VERSION" | sed -e 's/[0-9]\.\(.*\)/\1/'`
+  if test $pcrever_major -eq 8; then
+    if test $pcrever_minor -gt 33 && test $pcrever_minor -lt 38; then
+       { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: The installed pcre version may contain a security bug. Please upgrade to 8.38 or later: http://www.pcre.org." >&5
+$as_echo "$as_me: WARNING: The installed pcre version may contain a security bug. Please upgrade to 8.38 or later: http://www.pcre.org." >&2;}
+    else
+       { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }
+    fi
+  else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; };
+  fi
+  found_pcre="yes"
+  PCRE_CPPFLAGS="`$PCRE_HOME/bin/pcre-config --cflags`"
+  PCRE_LIBS="`$PCRE_HOME/bin/pcre-config --libs`"
+
 fi
 
 have_pcre="no"
@@ -17617,18 +17651,31 @@ if test "x$found_pcre" != "xno"; then
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for pcre.h in $PCRE_HOME" >&5
 $as_echo_n "checking for pcre.h in $PCRE_HOME... " >&6; }
 
-  if test ! -f "$XML_HOME/include/pcre.h"; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not found" >&5
-$as_echo "not found" >&6; }
-  else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: found" >&5
-$as_echo "found" >&6; }
-    save_LIBS="$LIBS"
     save_CPPFLAGS="$CPPFLAGS"
-    CPPFLAGS="$CPPFLAGS $PCRE_CPPFLAGS"
-    save_LDFLAGS="$LDFLAGS"
-    LDFLAGS="$LDFLAGS $PCRE_LIBS"
+  CPPFLAGS="$CPPFLAGS $PCRE_CPPFLAGS"
+  save_LDFLAGS="$LDFLAGS"
+  LDFLAGS="$LDFLAGS $PCRE_LIBS"
 
+  ac_fn_c_check_header_mongrel "$LINENO" "pcre.h" "ac_cv_header_pcre_h" "$ac_includes_default"
+if test "x$ac_cv_header_pcre_h" = xyes; then :
+  have_pcre="yes"
+else
+  have_pcre="no"
+fi
+
+
+  if test "x$have_pcre" = "xno"; then
+    ac_fn_c_check_header_mongrel "$LINENO" "pcre/pcre.h" "ac_cv_header_pcre_pcre_h" "$ac_includes_default"
+if test "x$ac_cv_header_pcre_pcre_h" = xyes; then :
+  have_pcre="yes"
+else
+  have_pcre="no"
+fi
+
+
+  fi
+
+  if test "x$have_pcre" = "xyes"; then
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for pcre_compile in -lpcre" >&5
 $as_echo_n "checking for pcre_compile in -lpcre... " >&6; }
 if ${ac_cv_lib_pcre_pcre_compile+:} false; then :
@@ -17671,10 +17718,11 @@ else
   have_pcre="no"
 fi
 
+  fi
 
-    CPPFLAGS="$save_CPPFLAGS"
+  if test "x$have_pcre" = "xno"; then
+        CPPFLAGS="$save_CPPFLAGS"
     LDFLAGS="$save_LDFLAGS"
-    LIBS="$save_LIBS"
   fi
 fi
 
@@ -22799,6 +22847,24 @@ $as_echo "#define HAVE__INTERNAL__SHA_COLLECT 1" >>confdefs.h
 fi
 
 
+# Check whether --enable-yara was given.
+if test "${enable_yara+set}" = set; then :
+  enableval=$enable_yara; enable_yara=$enableval
+else
+  enable_yara="yes"
+fi
+
+
+if test "$enable_yara" = "yes"; then
+
+$as_echo "#define HAVE_YARA 1" >>confdefs.h
+]
+
+fi
+
+
+
+
 case "$host_os" in
 freebsd*)
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for kinfo_getvmmap in -lutil" >&5
@@ -25626,7 +25692,16 @@ else
   ENABLE_LLVM_FALSE=
 fi
 
+ if test "$enable_yara" != "no"; then
+  ENABLE_YARA_TRUE=
+  ENABLE_YARA_FALSE='#'
+else
+  ENABLE_YARA_TRUE='#'
+  ENABLE_YARA_FALSE=
+fi
+
 no_recursion="yes";
+
 ac_config_files="$ac_config_files libclamav/Makefile"
 
 cat >confcache <<\_ACEOF
@@ -25842,6 +25917,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${ENABLE_LLVM_TRUE}" && test -z "${ENABLE_LLVM_FALSE}"; then
   as_fn_error $? "conditional \"ENABLE_LLVM\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${ENABLE_YARA_TRUE}" && test -z "${ENABLE_YARA_FALSE}"; then
+  as_fn_error $? "conditional \"ENABLE_YARA\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 
@@ -28550,7 +28629,7 @@ fi
 if test "x$XML_LIBS" = "x"; then
 
 
-   $as_echo_n "              dmg and xar : "
+   $as_echo_n "              libxml2     : "
    if test "x" = "xno"; then :
   $as_echo "no (disabled)"
 elif test "x" = "xyes"; then :
@@ -28564,7 +28643,7 @@ fi
 else
 
 
-   $as_echo_n "              dmg and xar : "
+   $as_echo_n "              libxml2     : "
    if test "x" = "xno"; then :
   $as_echo "yes, from $XML_HOME (disabled)"
 elif test "x" = "xyes"; then :
@@ -28576,6 +28655,19 @@ else
 fi
 
 fi
+
+
+   $as_echo_n "              yara        : "
+   if test "x$enable_yara" = "xno"; then :
+  $as_echo "$enable_yara (disabled)"
+elif test "x$enable_yara" = "xyes"; then :
+  $as_echo "$enable_yara"
+elif test "x$enable_yara" = "x"; then :
+  $as_echo "$enable_yara"
+else
+  $as_echo "$enable_yara ($enable_yara)"
+fi
+
 
 # Yep, downgrading the compiler avoids the bug too:
 # 4.0.x, and 4.1.0 are the known buggy versions

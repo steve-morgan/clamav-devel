@@ -87,8 +87,8 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;HAVE_CONFIG_H;PTW32_STATIC_LIB;THIS_IS_LIBCLAMAV;WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBCLAMAV_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\libclamav;$(SolutionDir)compat;$(SolutionDir)3rdparty\zlib;$(SolutionDir)3rdparty\pthreads;$(SolutionDir)3rdparty\bzip2;$(SolutionDir)3rdparty\libxml2;$(SolutionDir)3rdparty\libxml2\include;$(SolutionDir)..;C:\clamdeps\win32\openssl\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;HAVE_CONFIG_H;PTW32_STATIC_LIB;THIS_IS_LIBCLAMAV;WIN32;PCRE_STATIC;_DEBUG;_WINDOWS;_USRDLL;LIBCLAMAV_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\libclamav;$(SolutionDir)compat;$(SolutionDir)3rdparty\zlib;$(SolutionDir)3rdparty\pthreads;$(SolutionDir)3rdparty\bzip2;$(SolutionDir)3rdparty\libxml2;$(SolutionDir)3rdparty\libxml2\include;$(SolutionDir)3rdparty\pcre;$(SolutionDir)..;C:\clamdeps\win32\openssl\include</AdditionalIncludeDirectories>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4996;4090;4244;4018;4101;4333;4146</DisableSpecificWarnings>
     </ClCompile>
@@ -105,8 +105,8 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;HAVE_CONFIG_H;PTW32_STATIC_LIB;THIS_IS_LIBCLAMAV;WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBCLAMAV_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\libclamav;$(SolutionDir)compat;$(SolutionDir)3rdparty\zlib;$(SolutionDir)3rdparty\pthreads;$(SolutionDir)3rdparty\bzip2;$(SolutionDir)3rdparty\libxml2;$(SolutionDir)3rdparty\libxml2\include;$(SolutionDir)..;C:\clamdeps\win64\openssl\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;HAVE_CONFIG_H;PTW32_STATIC_LIB;THIS_IS_LIBCLAMAV;WIN32;PCRE_STATIC;_DEBUG;_WINDOWS;_USRDLL;LIBCLAMAV_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\libclamav;$(SolutionDir)compat;$(SolutionDir)3rdparty\zlib;$(SolutionDir)3rdparty\pthreads;$(SolutionDir)3rdparty\bzip2;$(SolutionDir)3rdparty\libxml2;$(SolutionDir)3rdparty\libxml2\include;$(SolutionDir)3rdparty\pcre;$(SolutionDir)..;C:\clamdeps\win64\openssl\include</AdditionalIncludeDirectories>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4996;4090;4244;4018;4101;4333;4146;4267;4334</DisableSpecificWarnings>
     </ClCompile>
@@ -125,8 +125,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;HAVE_CONFIG_H;PTW32_STATIC_LIB;THIS_IS_LIBCLAMAV;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBCLAMAV_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\libclamav;$(SolutionDir)compat;$(SolutionDir)3rdparty\zlib;$(SolutionDir)3rdparty\pthreads;$(SolutionDir)3rdparty\bzip2;$(SolutionDir)3rdparty\libxml2;$(SolutionDir)3rdparty\libxml2\include;$(SolutionDir)..;C:\clamdeps\win32\openssl\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;HAVE_CONFIG_H;PTW32_STATIC_LIB;THIS_IS_LIBCLAMAV;WIN32;PCRE_STATIC;NDEBUG;_WINDOWS;_USRDLL;LIBCLAMAV_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\libclamav;$(SolutionDir)compat;$(SolutionDir)3rdparty\zlib;$(SolutionDir)3rdparty\pthreads;$(SolutionDir)3rdparty\bzip2;$(SolutionDir)3rdparty\libxml2;$(SolutionDir)3rdparty\libxml2\include;$(SolutionDir)3rdparty\pcre;$(SolutionDir)..;C:\clamdeps\win32\openssl\include</AdditionalIncludeDirectories>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4996;4090;4244;4018;4101;4333;4146</DisableSpecificWarnings>
     </ClCompile>
@@ -147,8 +147,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;HAVE_CONFIG_H;PTW32_STATIC_LIB;THIS_IS_LIBCLAMAV;WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBCLAMAV_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\libclamav;$(SolutionDir)compat;$(SolutionDir)3rdparty\zlib;$(SolutionDir)3rdparty\pthreads;$(SolutionDir)3rdparty\bzip2;$(SolutionDir)3rdparty\libxml2;$(SolutionDir)3rdparty\libxml2\include;$(SolutionDir)..;C:\clamdeps\win64\openssl\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;HAVE_CONFIG_H;PTW32_STATIC_LIB;THIS_IS_LIBCLAMAV;WIN32;PCRE_STATIC;NDEBUG;_WINDOWS;_USRDLL;LIBCLAMAV_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\libclamav;$(SolutionDir)compat;$(SolutionDir)3rdparty\zlib;$(SolutionDir)3rdparty\pthreads;$(SolutionDir)3rdparty\bzip2;$(SolutionDir)3rdparty\libxml2;$(SolutionDir)3rdparty\libxml2\include;$(SolutionDir)3rdparty\pcre;$(SolutionDir)..;C:\clamdeps\win64\openssl\include</AdditionalIncludeDirectories>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4996;4090;4244;4018;4101;4333;4146;4267;4334</DisableSpecificWarnings>
     </ClCompile>
@@ -186,6 +186,7 @@
     <ClCompile Include="..\libclamav\openioc.c" />
     <ClCompile Include="..\libclamav\sf_base64decode.c" />
     <ClCompile Include="..\libclamav\stats.c" />
+    <ClCompile Include="..\libclamav\tiff.c" />
     <ClCompile Include="..\libclamav\tomsfastmath\mul\fp_mul_comba_small_set.c" />
     <ClCompile Include="..\libclamav\tomsfastmath\mul\fp_mul_comba_9.c" />
     <ClCompile Include="..\libclamav\tomsfastmath\mul\fp_mul_comba_64.c" />
@@ -348,6 +349,7 @@
     <ClCompile Include="..\libclamav\macho.c" />
     <ClCompile Include="..\libclamav\matcher-ac.c" />
     <ClCompile Include="..\libclamav\matcher-bm.c" />
+    <ClCompile Include="..\libclamav\matcher-pcre.c" />
     <ClCompile Include="..\libclamav\matcher.c" />
     <ClCompile Include="..\libclamav\mbox.c" />
     <ClCompile Include="..\libclamav\mbr.c" />
@@ -356,6 +358,8 @@
     <ClCompile Include="..\libclamav\mpool.c" />
     <ClCompile Include="..\libclamav\msexpand.c" />
     <ClCompile Include="..\libclamav\mspack.c" />
+    <ClCompile Include="..\libclamav\msxml.c" />
+    <ClCompile Include="..\libclamav\msxml_parser.c" />
     <ClCompile Include="..\libclamav\nsis\bzlib.c">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\nsis_bzlib</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(IntDir)\nsis_bzlib</ObjectFileName>
@@ -383,6 +387,7 @@
     <ClCompile Include="..\libclamav\regex\regexec.c" />
     <ClCompile Include="..\libclamav\regex\regfree.c" />
     <ClCompile Include="..\libclamav\regex\strlcpy.c" />
+    <ClCompile Include="..\libclamav\regex_pcre.c" />
     <ClCompile Include="..\libclamav\sis.c" />
     <ClCompile Include="..\libclamav\special.c" />
     <ClCompile Include="..\libclamav\spin.c" />
@@ -413,6 +418,13 @@
     <ClCompile Include="..\libclamav\www.c" />
     <ClCompile Include="..\libclamav\xdp.c" />
     <ClCompile Include="..\libclamav\xz_iface.c" />
+    <ClCompile Include="..\libclamav\yara_arena.c" />
+    <ClCompile Include="..\libclamav\yara_compiler.c" />
+    <ClCompile Include="..\libclamav\yara_exec.c" />
+    <ClCompile Include="..\libclamav\yara_grammar.c" />
+    <ClCompile Include="..\libclamav\yara_hash.c" />
+    <ClCompile Include="..\libclamav\yara_lexer.c" />
+    <ClCompile Include="..\libclamav\yara_parser.c" />
     <ClCompile Include="..\libclamav\yc.c" />
     <ClCompile Include="..\shared\getopt.c" />
     <ClCompile Include="..\shared\misc.c" />
@@ -455,6 +467,27 @@
     <ClCompile Include="3rdparty\libxml2\xmlreader.c" />
     <ClCompile Include="3rdparty\libxml2\xmlsave.c" />
     <ClCompile Include="3rdparty\libxml2\xmlstring.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_byte_order.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_chartables.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_compile.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_config.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_dfa_exec.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_exec.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_fullinfo.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_get.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_globals.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_jit_compile.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_maketables.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_newline.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_ord2utf8.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_refcount.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_string_utils.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_study.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_tables.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_ucd.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_valid_utf8.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_version.c" />
+    <ClCompile Include="3rdparty\pcre\pcre_xclass.c" />
     <ClCompile Include="3rdparty\pthreads\pthread.c" />
     <ClCompile Include="3rdparty\zlib\adler32.c" />
     <ClCompile Include="3rdparty\zlib\compress.c">
@@ -507,9 +540,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\libclamav\conv.h" />
     <ClInclude Include="..\libclamav\hostid.h" />
-    <ClInclude Include="..\libclamav\stats_json.h" />
     <ClInclude Include="..\libclamav\stats.h" />
     <ClInclude Include="..\libclamav\www.h" />
     <ClInclude Include="..\libclamav\xdp.h" />
