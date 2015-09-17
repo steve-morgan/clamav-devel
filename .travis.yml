@@ -29,5 +29,5 @@ before_install:
       check
       zlib1g-dev
 
-install: sudo make install
+install: ./configure --enable-check --with-libjson
 script: if [ ${COVERITY_SCAN_BRANCH} != 1 ]; then make check; fi
