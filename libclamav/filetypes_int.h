@@ -1,6 +1,6 @@
 /*
  *  Static filetype data for use when daily.ftm is not available.
-* *
+ *
  *  Copyright (C) 2007-2013 Sourcefire, Inc.
  *
  *  Authors: Tomasz Kojm
