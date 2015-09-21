@@ -10,7 +10,7 @@ env:
 addons:
   coverity_scan:
     project:
-      name: steve-morgan/clamav-devel
+      name: ClamAV
       version: 0.99
       description: ClamAV
     notification_email: stevmorg@cisco.com
